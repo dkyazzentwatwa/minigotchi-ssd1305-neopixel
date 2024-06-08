@@ -1,27 +1,24 @@
 /**
  * config.h: header files for config.cpp
- */
+*/
 
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#include "minigotchi.h"
 #include <Arduino.h>
-#include <iostream>
-#include <random>
 #include <string>
 #include <vector>
+#include <iostream>
+#include <random>
 
 class Config {
 public:
   static bool deauth;
   static bool advertise;
-  static int shortDelay;
-  static int longDelay;
-  static bool parasite;
   static bool display;
   static std::string screen;
   static int baud;
+  static std::string bssid;
   static int channel;
   static std::vector<std::string> whitelist;
   static int epoch;
@@ -54,4 +51,4 @@ private:
   static int time();
 };
 
-#endif // CONFIG_H
+#endif  // CONFIG_H

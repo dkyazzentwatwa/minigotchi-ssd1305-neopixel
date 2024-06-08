@@ -1,7 +1,7 @@
 /**
  * structs.h: valid IEEE 802.11 structures
  * source: https://github.com/tht/80211Raw/blob/master/structs.h
- */
+*/
 
 #ifndef _STRUCTS_H_
 #define _STRUCTS_H_
@@ -11,53 +11,55 @@
  * Quite a few are not used currently. Still keeping them for reference.
  */
 
+#ifdef ESP32
+#include <WiFi.h>
+#include <esp_wifi.h>
+#else
 #include <ESP8266WiFi.h>
+#endif
 
 // SDK structures -----------------------------------
 
-// source:
-// https://github.com/espressif/ESP8266_RTOS_SDK/blob/master/components/esp8266/include/esp_wifi_types.h#L381
+#ifndef ESP32
 typedef struct {
-  signed rssi : 8;             /**< signal intensity of packet */
-  unsigned rate : 4;           /**< data rate */
-  unsigned is_group : 1;       /**< usually not used */
-  unsigned : 1;                /**< reserve */
-  unsigned sig_mode : 2;       /**< 0:is not 11n packet; 1:is 11n packet */
-  unsigned legacy_length : 12; /**< Length of 11bg mode packet */
-  unsigned damatch0 : 1;       /**< usually not used */
-  unsigned damatch1 : 1;       /**< usually not used */
-  unsigned bssidmatch0 : 1;    /**< usually not used */
-  unsigned bssidmatch1 : 1;    /**< usually not used */
-  unsigned mcs : 7; /**< if is 11n packet, shows the modulation(range from 0 to
-                       76) */
-  unsigned cwb : 1; /**< if is 11n packet, shows if is HT40 packet or not */
-  unsigned HT_length : 16;   /**< Length of 11n mode packet */
-  unsigned smoothing : 1;    /**< reserve */
-  unsigned not_sounding : 1; /**< reserve */
-  unsigned : 1;              /**< reserve */
-  unsigned aggregation : 1;  /**< Aggregation */
-  unsigned stbc : 2;         /**< STBC */
-  unsigned fec_coding : 1;   /**< Flag is set for 11n packets which are LDPC */
-  unsigned sgi : 1;          /**< SGI */
-  unsigned rxend_state : 8;  /**< usually not used */
-  unsigned ampdu_cnt : 8;    /**< ampdu cnt */
-  unsigned channel : 4;      /**< which channel this packet in */
-  unsigned : 4;              /**< reserve */
-  signed noise_floor : 8;    /**< usually not used */
+  signed rssi : 8;    //< signal intensity of packet
+  unsigned rate : 4;  //< data rate
+  unsigned is_group : 1;
+  unsigned : 1;           //< reserve
+  unsigned sig_mode : 2;  //< 0:is not 11n packet; 1:is 11n packet
+  unsigned legacy_length : 12;
+  unsigned damatch0 : 1;
+  unsigned damatch1 : 1;
+  unsigned bssidmatch0 : 1;
+  unsigned bssidmatch1 : 1;
+  unsigned mcs : 7;           //< if is 11n packet, shows the modulation(range from 0 to 76)
+  unsigned cwb : 1;           //< if is 11n packet, shows if is HT40 packet or not
+  unsigned HT_length : 16;    //< reserve
+  unsigned smoothing : 1;     //< reserve
+  unsigned not_sounding : 1;  //< reserve
+  unsigned : 1;               //< reserve
+  unsigned aggregation : 1;   //< Aggregation
+  unsigned stbc : 2;          //< STBC
+  unsigned fec_coding : 1;    //< Flag is set for 11n packets which are LDPC
+  unsigned sgi : 1;           //< SGI
+  unsigned rxend_state : 8;
+  unsigned ampdu_cnt : 8;  //< ampdu cnt
+  unsigned channel : 4;    //< which channel this packet in
+  unsigned : 4;            //< reserve
+  signed noise_floor : 8;
 } wifi_pkt_rx_ctrl_t;
 
 typedef struct {
-  wifi_pkt_rx_ctrl_t rx_ctrl; //< metadata header
-  uint8_t payload[0]; //< Data or management payload. Length of payload is
-                      //described by rx_ctrl.sig_len. Type of content determined
-                      //by packet type argument of callback.
+  wifi_pkt_rx_ctrl_t rx_ctrl;  //< metadata header
+  uint8_t payload[0];          //< Data or management payload. Length of payload is described by rx_ctrl.sig_len. Type of content determined by packet type argument of callback.
 } wifi_promiscuous_pkt_t;
+#endif
 
-typedef struct { // Size: 128
+typedef struct {  // Size: 128
   wifi_pkt_rx_ctrl_t rx_ctrl;
   uint8_t buf[1000];
   uint16_t cnt;
-  uint16_t len; // length of packet
+  uint16_t len;  //length of packet
 } wifi_pkt_mgmt_t;
 
 // https://github.com/justcallmekoko/ESP32Marauder/blob/master/esp32_marauder/WiFiScan.h
@@ -84,14 +86,17 @@ typedef struct {
   wifi_pkt_lenseq_t lenseq[1];
 } wifi_pkt_data_t;
 
+
 // IEEE802.11 data structures ---------------------
 
+#ifndef ESP32
 typedef enum {
   WIFI_PKT_MGMT,
   WIFI_PKT_CTRL,
   WIFI_PKT_DATA,
   WIFI_PKT_MISC,
 } wifi_promiscuous_pkt_type_t;
+#endif
 
 typedef enum {
   ASSOCIATION_REQ,
@@ -135,12 +140,11 @@ typedef struct {
 } wifi_header_frame_control_t;
 
 /**
- * Ref:
- * https://github.com/lpodkalicki/blog/blob/master/esp32/016_wifi_sniffer/main/main.c
+ * Ref: https://github.com/lpodkalicki/blog/blob/master/esp32/016_wifi_sniffer/main/main.c
  */
 typedef struct {
   wifi_header_frame_control_t frame_ctrl;
-  // unsigned duration_id:16; /* !!!! ugly hack */
+  //unsigned duration_id:16; /* !!!! ugly hack */
   uint8_t addr1[6]; /* receiver address */
   uint8_t addr2[6]; /* sender address */
   uint8_t addr3[6]; /* filtering address */
@@ -148,11 +152,9 @@ typedef struct {
   uint8_t addr4[6]; /* optional */
 } wifi_ieee80211_mac_hdr_t;
 
-// source:
-// https://github.com/justcallmekoko/ESP32Marauder/blob/c0554b95ceb379d29b9a8925d27cc2c0377764a9/esp32_marauder/WiFiScan.h#L213
 typedef struct {
-  uint8_t payload[0];
-  WifiMgmtHdr hdr;
+  wifi_ieee80211_mac_hdr_t hdr;
+  uint8_t payload[2]; /* network data ended with 4 bytes csum (CRC32) */
 } wifi_ieee80211_packet_t;
 
 #endif
