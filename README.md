@@ -1,10 +1,29 @@
-# minigotchi - ミニゴッチ
+# minigotchi for SSD1305 OLED + NeoPixel  - ミニゴッチ
 
 <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/Pwnagotchi-Unofficial/minigotchi"></img>
 <img alt="GitHub license" src="https://img.shields.io/github/license/Pwnagotchi-Unofficial/minigotchi"></img>
 <a href="https://github.com/Pwnagotchi-Unofficial/minigotchi/graphs/contributors"><img alt="GitHub contributors" src="https://img.shields.io/github/contributors/Pwnagotchi-Unofficial/minigotchi"></a>
 <img alt="GitHub commit activity" src="https://img.shields.io/github/commit-activity/m/Pwnagotchi-Unofficial/minigotchi"></img>
 <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/Pwnagotchi-Unofficial/minigotchi"></img>
+
+## A fork for the SSD1305 OLED 128x32 Screens
+<img src="images/mini3.jpg" alt="minigotchi" width="300"></img>
+This fork of the Minigotchi project adds support for SSD1305 128x32 screens and integrates a Neopixel status light. I also increased the delay timings, and i believe this helped the crashing --  i've been running with no problems. These enhancements provide a more versatile and visually informative experience for your digital pet. Also shortened the display messages to make it all fit on the screen better!
+
+### Features
+
+SSD1305 128x32 Screen Support:
+Fully compatible with the SSD1305 128x32 display, offering clear and concise visuals for your Minigotchi.
+
+Neopixel Status Light:
+A Neopixel light that blinks different colors to indicate the current stage of the Minigotchi, making it easier to monitor the status at a glance.
+
+Special thanks to the original Minigotchi project for the inspiration and foundation of this fork.
+
+<img src="images/mini1.jpg" alt="minigotchi" width="300"></img>
+
+<img src="images/mini2.jpg" alt="minigotchi" width="300"></img>
+
 
 ## An even smaller Pwnagotchi.
 
