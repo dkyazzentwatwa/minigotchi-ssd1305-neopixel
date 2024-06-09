@@ -45,6 +45,7 @@ public:
   static std::string session_id;
   static int uptime;
   static std::string version;
+  static bool parasite;
 
 private:
   static int random(int min, int max);

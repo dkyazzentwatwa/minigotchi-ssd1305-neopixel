@@ -18,6 +18,7 @@ public:
   static void checkChannel(int channel);
   static int list();
   static int channelList[13];  // 13 channels
+  static bool isValidChannel(int chn);
 
 private:
   static int randomIndex;
